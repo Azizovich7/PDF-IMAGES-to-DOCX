@@ -1,74 +1,252 @@
-An automated pipeline designed to extract text from PDFs and photos, filter vocabulary to focus on the A2+ (upper-elementary/lower-intermediate) level, translate words, and output a structured, clean, and styled Microsoft Word (`.docx`) book organized by units.
+# 📚 A2+ Vocabulary Book Generator
 
-It utilizes **PyMuPDF** and **Tesseract OCR** for text extraction (even from scanned documents) and integrates with **OpenRouter** to process content using cost-free, open-source Language Models (LLMs).
+An automated pipeline for transforming PDFs and images into a professionally formatted **A2+ vocabulary textbook**.
 
----
+The generator extracts text from digital documents, scanned PDFs, and images, identifies vocabulary at the **A2+ (Upper-Elementary / Lower-Intermediate)** CEFR level, generates English definitions, translates words into **Uzbek** and **Russian**, and compiles everything into a clean, publication-ready Microsoft Word (`.docx`) book.
 
-## 🚀 Features
-
-*   **📂 Structured by Units:** Automatically treats every document or image in the input directory as a distinct "Unit".
-*   **🔍 Hybrid Extraction:** Reads digital text PDFs, handles scanned/image-only PDFs, and extracts text from PNG, JPG, and JPEG files.
-*   **🤖 AI-Powered CEFR Filtering:** Uses free open-source models (via OpenRouter) to filter words specifically to the A2+ level.
-*   **🌐 Trilingual Output:** Generates definitions in English, alongside translations into **Russian** and **Uzbek**.
-*   **🎨 Clean Word Styling:** Produces formatted tables with styled header rows, bold keywords, and uniform layouts, complete with a title page and automatic page breaks between units.
+Powered by **PyMuPDF**, **Tesseract OCR**, and free open-source language models through **OpenRouter**, this tool makes vocabulary-book creation fast, accurate, and fully automated.
 
 ---
 
-## 🛠️ Project Structure
+# ✨ Features
 
-Your project directory will look like this:
+### 📂 Unit-Based Organization
+
+Each file placed in the input directory is automatically treated as a separate learning unit.
+
+### 🔍 Hybrid Text Extraction
+
+Supports multiple content sources:
+
+* Digital PDFs
+* Scanned PDFs
+* PNG images
+* JPG images
+* JPEG images
+
+### 🤖 AI-Powered Vocabulary Processing
+
+Uses free open-source LLMs via OpenRouter to:
+
+* Extract vocabulary
+* Filter words to the A2+ CEFR level
+* Generate concise English definitions
+* Create multilingual translations
+
+### 🌍 Trilingual Vocabulary Output
+
+Each vocabulary entry includes:
+
+* 🇬🇧 English Word
+* 📖 English Definition
+* 🇺🇿 Uzbek Translation
+* 🇷🇺 Russian Translation
+
+### 🎨 Professional DOCX Formatting
+
+Automatically generates a polished textbook featuring:
+
+* Cover page
+* Unit headings
+* Styled vocabulary tables
+* Bold keywords
+* Consistent formatting
+* Automatic page breaks between units
+
+---
+
+# 🗂️ Project Structure
 
 ```text
 vocabulary-book-generator/
-├── inputs/             # Place your source PDFs/Images here (e.g., Unit_1.pdf, Unit_2.png)
-├── outputs/            # The generated .docx book will be saved here
-├── generator.py        # Main execution script
-└── README.md           # Documentation
+│
+├── inputs/                 # Source PDFs and images
+├── outputs/                # Generated vocabulary book
+├── generator.py            # Main application
+└── README.md               # Documentation
+```
 
+---
 
-📋 Prerequisites & Installation
-1. Python Libraries
-Install the required dependencies using pip:
-code
-Bash
+# 📋 Prerequisites & Installation
+
+## 1. Install Python Dependencies
+
+Install all required packages:
+
+```bash
 pip install python-docx openai pillow pytesseract pymupdf
-2. Tesseract OCR (Required for Scanned PDFs & Images)
-Because the script reads text from images, you must install the Tesseract OCR engine on your computer:
-Windows:
-Download the installer from the Tesseract at UB-Mannheim repository.
-Run the installer (it typically installs to C:\Program Files\Tesseract-OCR).
-Make sure the path in generator.py points to your tesseract.exe location.
-Mac: Install via Homebrew:
-code
-Bash
-brew install tesseract
-Linux:
-code
-Bash
-sudo apt-get install tesseract-ocr
-3. OpenRouter API Key
-The script uses free models available on OpenRouter to translate and format the text.
-Sign up for a free account at OpenRouter.
-Create an API key in your settings dashboard.
-⚙️ Configuration
-Before running the script, open generator.py and configure your API key and Tesseract installation path:
-code
-Python
-# 1. Update your Tesseract location (mostly for Windows users)
-pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
+```
 
-# 2. Add your OpenRouter API key
+---
+
+## 2. Install Tesseract OCR
+
+This project relies on **Tesseract OCR** to extract text from scanned documents and image files.
+
+### Windows
+
+1. Download the installer from the Tesseract OCR (UB-Mannheim) release page.
+2. Run the installer.
+
+Default installation location:
+
+```text
+C:\Program Files\Tesseract-OCR
+```
+
+3. Update the Tesseract path in `generator.py`.
+
+### macOS
+
+Install using Homebrew:
+
+```bash
+brew install tesseract
+```
+
+### Linux (Ubuntu/Debian)
+
+```bash
+sudo apt update
+sudo apt install tesseract-ocr
+```
+
+---
+
+## 3. Obtain an OpenRouter API Key
+
+The project uses OpenRouter to access free open-source language models.
+
+### Steps
+
+1. Create a free OpenRouter account.
+2. Generate an API key from your dashboard.
+3. Copy the key for configuration.
+
+---
+
+# ⚙️ Configuration
+
+Open `generator.py` and update the following settings:
+
+```python
+# Tesseract OCR location (mainly required on Windows)
+pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
+
+# OpenRouter API Key
 OPENROUTER_API_KEY = "your_openrouter_api_key_here"
 
-# 3. Optional: Change the target model (Default uses Llama-3-8b-Instruct)
-MODEL_NAME = "meta-llama/llama-3-8b-instruct:free"
-📖 How to Use
-Clone or download this repository to your machine.
-Put the files you want to convert (images, digital PDFs, or scanned PDFs) into the inputs folder.
-Tip: Name your files in order, e.g., 01_lifestyle.pdf, 02_travel.png. The script sorts files alphabetically to build the units.
-Open your terminal or command prompt inside the project folder.
-Run the script:
-code
-Bash
+# Optional: Select a different model
+MODEL_NAME = "openrouter/free"
+```
+
+---
+
+# 📖 Usage
+
+## Step 1 — Prepare Your Files
+
+Place all source materials into the `inputs` directory.
+
+Supported formats:
+
+* 📄 PDF
+* 📄 Scanned PDF
+* 🖼️ PNG
+* 🖼️ JPG
+* 🖼️ JPEG
+
+### Recommended Naming Convention
+
+For proper unit ordering, name files numerically:
+
+```text
+01_lifestyle.pdf
+02_travel.pdf
+03_education.png
+04_environment.jpg
+```
+
+Files are processed alphabetically.
+
+---
+
+## Step 2 — Run the Generator
+
+Open a terminal inside the project folder and execute:
+
+```bash
 python generator.py
-Check the outputs folder for your compiled and formatted A2_Vocabulary_Book.docx.
+```
+
+---
+
+## Step 3 — Retrieve the Generated Book
+
+After processing completes, the vocabulary textbook will be saved in the `outputs` directory:
+
+```text
+outputs/A2_Vocabulary_Book.docx
+```
+
+---
+
+# 📘 Generated Output
+
+The resulting document includes:
+
+* ✅ CEFR A2+ vocabulary
+* ✅ English definitions
+* ✅ Uzbek translations
+* ✅ Russian translations
+* ✅ Unit-based organization
+* ✅ Professional table formatting
+* ✅ Cover page
+* ✅ Automatic page breaks
+* ✅ Publication-ready DOCX layout
+
+---
+
+# 🚀 Example Workflow
+
+```text
+PDFs / Images
+        │
+        ▼
+Text Extraction
+(PyMuPDF + OCR)
+        │
+        ▼
+Vocabulary Filtering
+(OpenRouter LLM)
+        │
+        ▼
+Definitions & Translations
+        │
+        ▼
+DOCX Generation
+        │
+        ▼
+A2_Vocabulary_Book.docx
+```
+
+---
+
+# 🧠 Technologies Used
+
+| Technology    | Purpose                  |
+| ------------- | ------------------------ |
+| PyMuPDF       | PDF text extraction      |
+| Pillow        | Image processing         |
+| Tesseract OCR | OCR for scanned files    |
+| OpenRouter    | Access to free LLMs      |
+| python-docx   | Word document generation |
+
+---
+
+# 📄 License
+
+This project is provided as-is for educational and personal use.
+
+Feel free to modify, improve, and adapt it to your own learning materials and vocabulary projects.
